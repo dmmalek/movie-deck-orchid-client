@@ -21,7 +21,7 @@ const SocialLogIn = () => {
       <div className="py-2">
         <button
           onClick={handleGoogleLogIn}
-          className="btn btn-outline hover:bg-green-600 hover:text-white hover:border-green-600 text-teal-600 font-semibold w-full text-sm sm:text-base transition-colors duration-200"
+          className="btn btn-outline font-semibold w-full text-sm sm:text-base transition-colors duration-200"
         >
           <FaGoogle className="text-lg" />
           <span>Continue with Google</span>
