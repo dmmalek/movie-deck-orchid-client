@@ -1,7 +1,11 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 const Navbar = () => {
+  const { user, signOutUser, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const links = (
     <>
       <li>
@@ -10,12 +14,17 @@ const Navbar = () => {
       <li>
         <NavLink to="/">All Movies</NavLink>
       </li>
-      <li>
-        <NavLink to="/">Add Movie</NavLink>
-      </li>
-      <li>
-        <NavLink to="/">My Favorites</NavLink>
-      </li>
+      {user && (
+        <>
+          <li>
+            <NavLink to="/">Add Movie</NavLink>
+          </li>
+          <li>
+            <NavLink to="/">My Favorites</NavLink>
+          </li>
+        </>
+      )}
+
       <li>
         <NavLink to="/">About</NavLink>
       </li>
@@ -24,6 +33,17 @@ const Navbar = () => {
       </li>
     </>
   );
+
+  const handleSignOut = () => {
+    signOutUser()
+      .then(() => {
+        setUser(null);
+        navigate("/auth/login");
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
+  };
   return (
     <div>
       <div className="navbar bg-base-100 shadow-sm">
@@ -65,7 +85,15 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end gap-2">
-          <button className="btn btn-sm btn-outline">Login</button>
+          {user ? (
+            <button onClick={handleSignOut} className="btn btn-sm btn-outline">
+              Log out
+            </button>
+          ) : (
+            <NavLink to="/auth/login" className="btn btn-sm btn-outline">
+              Login
+            </NavLink>
+          )}
           <ThemeToggle />
         </div>
       </div>
